@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="My Web SQL" uuid="4561665f-9292-48b5-8b0d-e6bc07fff3e8">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="My SQL" uuid="1374c213-3d94-4959-9276-dddd15c05529">
+      <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://194.58.96.89:3306/srtudent441_17</jdbc-url>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://194.58.96.89:3306/srtudent441_17</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

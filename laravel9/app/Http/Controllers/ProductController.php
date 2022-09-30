@@ -2,35 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\Product\ProductCreateValidation;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
-     * 1:28:00
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $products = Product::paginate(15);
+        return view('admin.product.index', compact('products'));
     }
 
     /**
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        return view('admin.product.createOrUpdate');
     }
 
     /**
-     * @param Request $request
-     * @return void
+     * @param ProductCreateValidation $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(ProductCreateValidation $request)
     {
-        //
+        $validate = $request->validated();
+        unset($validate['photo_file']);
+        # public/name.jpg
+        $photo = $request->file('photo_file')->store('public');
+        # Explode => / => public/name.jpg => ['public', 'name.jpg']
+        $validate['photo'] = explode('/', $photo)[1];
+
+        Product::create($validate);
+        return back()->with(['success' => true]);
     }
 
     /**

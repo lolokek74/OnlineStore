@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Мой интернет магазин</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
-    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/bootstrap.bundle.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-light">
@@ -34,9 +34,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Мои заказы</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Мой аккаунт</a>
-                    </li>
                     @if(Auth::user()->role == 'admin')
                         <li class="nav-item"><a class="nav-link" href="#">Мой аккаунт</a></li>
                         <li class="nav-item dropdown">
@@ -44,8 +41,8 @@
                                 Администрирование
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Добавить товар</a></li>
-                                <li><a class="dropdown-item" href="#">Все товарф</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.product.create') }}">Добавить товар</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.product.index') }}">Все товары</a></li>
                                 <li><a class="dropdown-item" href="#">Просмотр заказов</a></li>
                                 <li><a class="dropdown-item" href="#">Пользователи</a></li>
                             </ul>
