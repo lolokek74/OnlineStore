@@ -5,11 +5,19 @@
         <div class="row">
             <div class="col"></div>
             <div class="col-6">
-                <h1>Создание нового товара</h1>
-                @if(session()->has('success'))
-                    <div class="alert alert-success">Товар успешно создан!</div>
+                @include('breadcrumb', $breadcrumbs)
+                @if(isset($product))
+                    <h1>Редактирование {{ $product->name }}</h1>
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">Товар успешно отредактирован!</div>
+                    @endif
+                @else
+                    <h1>Создание нового товара</h1>
+                    @if(session()->has('success'))
+                        <div class="alert alert-success">Товар успешно создан!</div>
+                    @endif
                 @endif
-                <form method="POST" action="{{ route('admin.product.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ (isset($product) ? route('admin.product.update', ['product' => $product->id]) : route('admin.product.store')) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="InputName" class="form-label">Наименование товара:</label>
@@ -36,7 +44,13 @@
                         <textarea type="text" name="description" class="form-control @error('description') is-invalid @enderror" id="InputDescription" aria-describedby="invalidInputDescription">{{ old('description') }}</textarea>
                         @error('description') <div id="invalidInputDescription" class="invalid-feedback">{{ $message }} </div> @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Создать новый товар</button>
+                    <button type="submit" class="btn btn-primary">
+                        @if(isset($product))
+                            Отредактировать товар
+                        @else
+                            Создать новый товар
+                        @endif
+                    </button>
                 </form>
             </div>
             <div class="col"></div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\Product\ProductCreateValidation;
+use App\Http\Requests\Admin\Product\ProductUpdateValidation;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.createOrUpdate');
+        $breadcrumbs = [
+            ['routeName' => 'welcome', 'name' => 'Главная странциа'],
+            ['name' => 'Создание нового товара']
+        ];
+        return view('admin.product.createOrUpdate', compact('breadcrumbs'));
     }
 
     /**
@@ -44,30 +49,51 @@ class ProductController extends Controller
 
     /**
      * @param Product $product
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show(Product $product)
     {
-        //
+        $breadcrumbs = [
+            ['routeName' => 'welcome', 'name' => 'Главная странциа'],
+            ['routeName' => 'admin.product.index', 'name' => 'Все продукты'],
+            ['name' => $product->name],
+        ];
+        return view('admin.product.show', compact('product', 'breadcrumbs'));
     }
 
     /**
      * @param Product $product
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(Product $product)
+    public function edit(Request $request, Product $product)
     {
-        //
+        $breadcrumbs = [
+            ['routeName' => 'welcome', 'name' => 'Главная странциа'],
+            ['routeName' => 'admin.product.index', 'name' => 'Все продукты'],
+            ['routeName' => 'admin.product.show', 'params' => ['product' => $product->id], 'name' => $product->name],
+            ['name' => $product->name . ' | Редактирование'],
+        ];
+        $request->session()->flashInput($product->toArray());
+        return view('admin.product.createOrUpdate', compact('product','breadcrumbs'));
     }
 
     /**
-     * @param Request $request
+     * @param ProductUpdateValidation $request
      * @param Product $product
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateValidation $request, Product $product)
     {
-        //
+        $validate = $request->validated();
+        unset($validate['photo_file']);
+        if ($request->hasFile('photo_file')){
+            # public/name.jpg
+            $photo = $request->file('photo_file')->store('public');
+            # Explode => / => public/name.jpg => ['public', 'name.jpg']
+            $validate['photo'] = explode('/', $photo)[1];
+        }
+        $product->update($validate);
+        return back()->with(['success' => true]);
     }
 
     /**
