@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Мой интернет магазин</title>
-    <link rel="stylesheet" href="/assets/css/bootstrap.css">
-    <script src="/assets/js/bootstrap.bundle.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-light">
@@ -31,11 +31,9 @@
                     </li>
                 @endguest
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Мои заказы</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#">Мои заказы</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('cabinet') }}">Мой аккаунт</a></li>
                     @if(Auth::user()->role == 'admin')
-                        <li class="nav-item"><a class="nav-link" href="#">Мой аккаунт</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Администрирование
@@ -48,6 +46,7 @@
                             </ul>
                         </li>
                     @endif
+                    <li class="nav-item"><a class="nav-link" href="{{ route('order.basket') }}">Корзина</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Выход</a></li>
                 @endauth
             </ul>

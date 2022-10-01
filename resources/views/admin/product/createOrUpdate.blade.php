@@ -19,6 +19,9 @@
                 @endif
                 <form method="POST" action="{{ (isset($product) ? route('admin.product.update', ['product' => $product->id]) : route('admin.product.store')) }}" enctype="multipart/form-data">
                     @csrf
+                    @isset($product)
+                        <input type="hidden" name="_method" value="PUT">
+                    @endisset
                     <div class="mb-3">
                         <label for="InputName" class="form-label">Наименование товара:</label>
                         <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="InputName" placeholder="Наименование товара: Компьютер" aria-describedby="invalidInputName" value="{{ old('name') }}">

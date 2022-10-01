@@ -21,12 +21,13 @@ class ProductController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         $breadcrumbs = [
             ['routeName' => 'welcome', 'name' => 'Главная странциа'],
             ['name' => 'Создание нового товара']
         ];
+        $request->session()->flashInput([]);
         return view('admin.product.createOrUpdate', compact('breadcrumbs'));
     }
 
@@ -68,7 +69,7 @@ class ProductController extends Controller
     public function edit(Request $request, Product $product)
     {
         $breadcrumbs = [
-            ['routeName' => 'welcome', 'name' => 'Главная странциа'],
+            ['routeName' => 'welcome', 'name' => 'Главная страница'],
             ['routeName' => 'admin.product.index', 'name' => 'Все продукты'],
             ['routeName' => 'admin.product.show', 'params' => ['product' => $product->id], 'name' => $product->name],
             ['name' => $product->name . ' | Редактирование'],
@@ -98,10 +99,17 @@ class ProductController extends Controller
 
     /**
      * @param Product $product
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('admin.product.index');
+    }
+
+    public function indexMain()
+    {
+        $products = Product::simplePaginate(25);
+        return view('users.product.main', compact('products'));
     }
 }
